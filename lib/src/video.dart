@@ -188,7 +188,7 @@ class _AwsomeVideoPlayerState extends State<AwsomeVideoPlayer>
 
     ///运行设备横竖屏
     SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
+     // DeviceOrientation.portraitUp,
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
@@ -342,7 +342,14 @@ class _AwsomeVideoPlayerState extends State<AwsomeVideoPlayer>
 
   /// 点击全屏或取消
   void toggleFullScreen() {
-    OrientationPlugin.forceOrientation(DeviceOrientation.landscapeRight);
+
+    ///运行设备横竖屏
+    SystemChrome.setPreferredOrientations([
+    //  DeviceOrientation.portraitUp,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+    //OrientationPlugin.forceOrientation(DeviceOrientation.landscapeRight);
     // if (fullscreened) {
     //   OrientationPlugin.forceOrientation(DeviceOrientation.portraitUp);
     // } else {
@@ -646,7 +653,13 @@ class _AwsomeVideoPlayerState extends State<AwsomeVideoPlayer>
 
   @override
   Widget build(BuildContext context) {
-    OrientationPlugin.forceOrientation(DeviceOrientation.landscapeRight);
+
+    ///运行设备横竖屏
+    SystemChrome.setPreferredOrientations([
+    //  DeviceOrientation.portraitUp,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
 
     /// Video children
     final videoChildrens = <Widget>[
