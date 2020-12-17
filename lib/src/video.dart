@@ -37,9 +37,12 @@ class AwsomeVideoPlayer extends StatefulWidget {
     this.onnetwork,
     this.onfullscreen,
     this.onpop,
+    this.startOrientation,
   })  : playOptions = playOptions ?? VideoPlayOptions(),
         videoStyle = videoStyle ?? VideoStyle(),
-        super(key: key);
+        super(key: key) {
+    startOrientation = startOrientation ?? Orientation.landscape;
+  }
 
   /// 视频资源
   final dataSource;
@@ -75,11 +78,14 @@ class AwsomeVideoPlayer extends StatefulWidget {
 
   /// 屏幕亮度回调
   final VideoCallback<bool> onfullscreen;
+
   //顶部控制栏点击返回回调
   final VideoCallback<VideoPlayerValue> onpop;
 
   /// 进度被拖拽的回调
   final VideoProgressDragHandle onprogressdrag;
+
+  Orientation startOrientation;
 
   @override
   _AwsomeVideoPlayerState createState() => _AwsomeVideoPlayerState();
@@ -89,6 +95,8 @@ class _AwsomeVideoPlayerState extends State<AwsomeVideoPlayer>
     with SingleTickerProviderStateMixin {
   /// 控制器 - 快进 seekTo 暂停 pause 播放 play 摧毁 dispose
   VideoPlayerController controller;
+
+  Orientation startOrientation;
 
   AnimationController controlBarAnimationController;
   Animation<double> controlTopBarAnimation;
@@ -122,6 +130,7 @@ class _AwsomeVideoPlayerState extends State<AwsomeVideoPlayer>
   @override
   void initState() {
     super.initState();
+    startOrientation = widget?.startOrientation ?? Orientation.landscape;
 
     /// 控制拦动画
     controlBarAnimationController = AnimationController(
@@ -142,13 +151,13 @@ class _AwsomeVideoPlayerState extends State<AwsomeVideoPlayer>
     widgetsBinding.addPostFrameCallback((callback) {
       widgetsBinding.addPersistentFrameCallback((callback) {
         if (context == null) return;
-        var orientation = MediaQuery.of(context).orientation;
+        // var orientation = MediaQuery.of(context).orientation;
         bool _fullscreen;
-        if (orientation == Orientation.landscape) {
+        if (startOrientation == Orientation.landscape) {
           //横屏
           _fullscreen = true;
           SystemChrome.setEnabledSystemUIOverlays([]);
-        } else if (orientation == Orientation.portrait) {
+        } else if (startOrientation == Orientation.portrait) {
           _fullscreen = false;
           SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
         }
@@ -208,7 +217,8 @@ class _AwsomeVideoPlayerState extends State<AwsomeVideoPlayer>
 
     ///竖屏
     SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft
     ]);
     Screen.keepOn(false);
     subscription.cancel();
@@ -332,11 +342,12 @@ class _AwsomeVideoPlayerState extends State<AwsomeVideoPlayer>
 
   /// 点击全屏或取消
   void toggleFullScreen() {
-    if (fullscreened) {
-      OrientationPlugin.forceOrientation(DeviceOrientation.portraitUp);
-    } else {
-      OrientationPlugin.forceOrientation(DeviceOrientation.landscapeRight);
-    }
+    OrientationPlugin.forceOrientation(DeviceOrientation.landscapeRight);
+    // if (fullscreened) {
+    //   OrientationPlugin.forceOrientation(DeviceOrientation.portraitUp);
+    // } else {
+    //   OrientationPlugin.forceOrientation(DeviceOrientation.landscapeRight);
+    // }
   }
 
   /// 显示或隐藏菜单栏
