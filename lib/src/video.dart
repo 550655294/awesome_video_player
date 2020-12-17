@@ -216,10 +216,10 @@ class _AwsomeVideoPlayerState extends State<AwsomeVideoPlayer>
     controller.dispose();
 
     ///竖屏
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft
-    ]);
+    // SystemChrome.setPreferredOrientations([
+    //   DeviceOrientation.landscapeRight,
+    //   DeviceOrientation.landscapeLeft
+    // ]);
     Screen.keepOn(false);
     subscription.cancel();
     super.dispose();
